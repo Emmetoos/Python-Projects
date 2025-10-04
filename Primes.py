@@ -75,4 +75,4 @@ while numPrimes < targetLength:
 
 print("100%% done. Genenerated " + str(numPrimes) + " primes. " +
       "The " + str(numPrimes) + "th prime is: " + str(input) +
-      ". Process took: " + formatTime(etr) + ".")
+      ". Process took: " + formatTime(timeTaken) + ".")
