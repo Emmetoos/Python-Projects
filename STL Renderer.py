@@ -1,16 +1,45 @@
 from mpl_toolkits import mplot3d
 import matplotlib.pyplot as plt
+import time
+
+startTime = time.time()
+
+def formatTime(time: float):
+
+    hours = round(time / 3600)
+    minutes = round((time % 3600) / 60)
+    seconds = round((time % 3600) % 60, 1)
+
+    if hours == 1:
+        hours = str(hours) + " hour"
+    else:
+        hours = str(hours) + " hours"
+
+    if minutes == 1:
+        minutes = str(minutes) + " minute"
+    else:
+        minutes = str(minutes) + " minutes"
+
+    if seconds == 1:
+        seconds = str(seconds) + " second"
+    else:
+        seconds = str(seconds) + " seconds"
+    
+    return(hours + ", " + minutes + ", and " + seconds)
+
 
 fig = plt.figure()
 ax = plt.axes(projection = '3d')
+
+trianglesDone = 0
 
 fileLocation = input("File Path: ")
 numBytes = 84
 with open(fileLocation, "rb") as file:
     file.seek(81)
-    trianglesLeft = int.from_bytes(file.read(4), "little")
+    triangles = int.from_bytes(file.read(4), "little")
 
-    while trianglesLeft > 0:
+    while trianglesDone < triangles:
         file.seek(1, 1)
         x = int.from_bytes(file.read(1), "big")
         y = int.from_bytes(file.read(1), "big")
@@ -21,6 +50,17 @@ with open(fileLocation, "rb") as file:
 
         ax.scatter(x, y ,z)
 
-        trianglesLeft -= 1
+        trianglesDone += 1
+
+        if (trianglesDone % (triangles / 1000) == 0):
+        
+            timeTaken = time.time() - startTime
+
+            percentDone = (trianglesDone / triangles)
+
+            etr = ((timeTaken / trianglesDone) * triangles) - timeTaken
+
+            print(str(format(percentDone, ".1%")) + " done. Plotted " + str(trianglesDone) + "/" + str(triangles)+ " triangles. "
+            "Estimated time remaining: " + formatTime(etr) + ".")
 
 plt.show()
