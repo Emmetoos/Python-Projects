@@ -55,8 +55,9 @@ while numPrimes < targetLength:
     
     if (isPrime == True):
         
-        numPrimes += 1
         primes.append(input)
+        numPrimes += 1
+        
     
     if (numPrimes % interval == 0) & (numPrimes != targetLength) & (primes[numPrimes - 1] == input):
         
@@ -64,15 +65,15 @@ while numPrimes < targetLength:
 
         interval = random.randint(9000, 11000)
 
-        percentDone = round((numPrimes / targetLength) * 100, 1)
+        percentDone = (numPrimes / targetLength)
 
         etr = ((timeTaken / numPrimes) * targetLength) - timeTaken
 
-        print(str(percentDone) + "%% done. Genenerated " + str(numPrimes) + "/" + str(targetLength)+ " primes. "
+        print(str(format(percentDone, ".1%")) + " done. Genenerated " + str(numPrimes) + "/" + str(targetLength)+ " primes. "
         "Estimated time remaining: " + formatTime(etr) + ".")
 
     input += 1
 
-print("100%% done. Genenerated " + str(numPrimes) + " primes. " +
-      "The " + str(numPrimes) + "th prime is: " + str(input) +
+print(f"{1:.1%}" + " done. Genenerated " + str(numPrimes) + " primes. " +
+      "The " + str(numPrimes) + "th prime is: " + str(primes[numPrimes - 1]) +
       ". Process took: " + formatTime(timeTaken) + ".")
