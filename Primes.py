@@ -67,10 +67,10 @@ while numPrimes < targetLength:
 
         percentDone = (numPrimes / targetLength)
 
-        etr = ((timeTaken / numPrimes) * targetLength) - timeTaken
+        estimatedTimeRemaining = ((timeTaken / numPrimes) * targetLength) - timeTaken
 
         print(str(format(percentDone, ".1%")) + " done. Genenerated " + str(numPrimes) + "/" + str(targetLength)+ " primes. "
-        "Estimated time remaining: " + formatTime(etr) + ".")
+        "Estimated time remaining: " + formatTime(estimatedTimeRemaining) + ".")
 
     input += 1
 
