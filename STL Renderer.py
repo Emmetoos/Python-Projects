@@ -40,11 +40,11 @@ with open(fileLocation, "rb") as file:
     triangles = int.from_bytes(file.read(4), "little")
 
     while trianglesDone < triangles:
-        file.seek(1, 1)
-        x = int.from_bytes(file.read(1), "big")
-        y = int.from_bytes(file.read(1), "big")
-        z = int.from_bytes(file.read(1), "big")
-        file.seek(1, 1)
+        file.seek(12, 1)
+        x = float(file.read(12))
+        y = float(file.read(12))
+        z = float(file.read(12))
+        file.seek(2, 1)
 
         #print(str(x) + ", " + str(y) + ", " + str(z))
 
@@ -58,9 +58,9 @@ with open(fileLocation, "rb") as file:
 
             percentDone = (trianglesDone / triangles)
 
-            etr = ((timeTaken / trianglesDone) * triangles) - timeTaken
+            estimatedTimeRemaining = ((timeTaken / trianglesDone) * triangles) - timeTaken
 
             print(str(format(percentDone, ".1%")) + " done. Plotted " + str(trianglesDone) + "/" + str(triangles)+ " triangles. "
-            "Estimated time remaining: " + formatTime(etr) + ".")
+            "Estimated time remaining: " + formatTime(estimatedTimeRemaining) + ".")
 
 plt.show()
