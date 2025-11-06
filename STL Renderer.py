@@ -1,13 +1,21 @@
-from mpl_toolkits import mplot3d
 import matplotlib.pyplot as plt
+
+import plotly.express as plex
+import plotly
 import time
+import struct
+import math
 
 startTime = time.time()
 
+x = []
+y = []
+z = []
+
 def formatTime(time: float):
 
-    hours = round(time / 3600)
-    minutes = round((time % 3600) / 60)
+    hours = math.floor(time / 3600)
+    minutes = math.floor((time % 3600) / 60)
     seconds = round((time % 3600) % 60, 1)
 
     if hours == 1:
@@ -27,32 +35,34 @@ def formatTime(time: float):
     
     return(hours + ", " + minutes + ", and " + seconds)
 
-
-fig = plt.figure()
-ax = plt.axes(projection = '3d')
-
 trianglesDone = 0
 
 fileLocation = input("File Path: ")
-numBytes = 84
+
 with open(fileLocation, "rb") as file:
-    file.seek(81)
+    file.seek(80, 1)
     triangles = int.from_bytes(file.read(4), "little")
 
+    print(str(triangles) + " triangles in model")
+
+    #print(file.read(50))
+
     while trianglesDone < triangles:
-        file.seek(12, 1)
-        x = float(file.read(12))
-        y = float(file.read(12))
-        z = float(file.read(12))
+
+        file.seek(12, 1) #skip the normal vector
+
+        for i in range(3):
+            x.append(struct.unpack('<f', file.read(4))[0])
+            y.append(struct.unpack('<f', file.read(4))[0])
+            z.append(struct.unpack('<f', file.read(4))[0])
+
         file.seek(2, 1)
 
         #print(str(x) + ", " + str(y) + ", " + str(z))
 
-        ax.scatter(x, y ,z)
-
         trianglesDone += 1
 
-        if (trianglesDone % (triangles / 1000) == 0):
+        if (trianglesDone % int(triangles / 1000) == 0):
         
             timeTaken = time.time() - startTime
 
@@ -63,4 +73,11 @@ with open(fileLocation, "rb") as file:
             print(str(format(percentDone, ".1%")) + " done. Plotted " + str(trianglesDone) + "/" + str(triangles)+ " triangles. "
             "Estimated time remaining: " + formatTime(estimatedTimeRemaining) + ".")
 
+#fig = plex.scatter_3d(x, y, z,)
+#fig.show()
+
+
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+ax.scatter(x, y, z, 'green')
 plt.show()
