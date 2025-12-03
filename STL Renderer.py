@@ -5,12 +5,14 @@ import plotly
 import time
 import struct
 import math
+import numpy as np
 
 startTime = time.time()
 
 x = []
 y = []
 z = []
+points = []
 
 def formatTime(time: float):
 
@@ -52,9 +54,13 @@ with open(fileLocation, "rb") as file:
         file.seek(12, 1) #skip the normal vector
 
         for i in range(3):
-            x.append(struct.unpack('<f', file.read(4))[0])
-            y.append(struct.unpack('<f', file.read(4))[0])
-            z.append(struct.unpack('<f', file.read(4))[0])
+                
+                x.append(struct.unpack('<f', file.read(4))[0])
+                y.append(struct.unpack('<f', file.read(4))[0])
+                z.append(struct.unpack('<f', file.read(4))[0])
+
+                points.append((x, y, z))
+
 
         file.seek(2, 1)
 
@@ -73,11 +79,11 @@ with open(fileLocation, "rb") as file:
             print(str(format(percentDone, ".1%")) + " done. Plotted " + str(trianglesDone) + "/" + str(triangles)+ " triangles. "
             "Estimated time remaining: " + formatTime(estimatedTimeRemaining) + ".")
 
-#fig = plex.scatter_3d(x, y, z,)
-#fig.show()
+fig = plex.scatter_3d(points, x = x, y = y, z = z)
+fig.show()
 
 
-fig = plt.figure()
+"""fig = plt.figure()
 ax = plt.axes(projection='3d')
 ax.scatter(x, y, z, 'green')
-plt.show()
+plt.show()"""
