@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 import plotly.express as plex
-import plotly
+import plotly.graph_objects as plgo
 import time
 import struct
 import math
@@ -78,12 +78,21 @@ with open(fileLocation, "rb") as file:
 
             print(str(format(percentDone, ".1%")) + " done. Plotted " + str(trianglesDone) + "/" + str(triangles)+ " triangles. "
             "Estimated time remaining: " + formatTime(estimatedTimeRemaining) + ".")
+"""
+fig = plgo.Figure(data=[
+    plgo.Mesh3d(
+        x = x,
+        y = y,
+        z = z,
 
-fig = plex.scatter_3d(points, x = x, y = y, z = z)
+        i = x,
+        j = y,
+        k = z
+        )
+    ])
 fig.show()
-
-
-"""fig = plt.figure()
+"""
+fig = plt.figure()
 ax = plt.axes(projection='3d')
-ax.scatter(x, y, z, 'green')
-plt.show()"""
+ax.plot(x, y, z, 'green')
+plt.show()
