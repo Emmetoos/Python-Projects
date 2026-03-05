@@ -2,6 +2,7 @@
 #import libraries
 import time
 import random
+import math
 
 #variables
 targetLength = int(input("How many primes? "))
@@ -17,8 +18,8 @@ timeTaken = 0
 #fucntions
 def formatTime(time: float):
 
-    hours = round(time / 3600)
-    minutes = round((time % 3600) / 60)
+    hours = math.floor(time / 3600)
+    minutes = math.floor((time % 3600) / 60)
     seconds = round((time % 3600) % 60, 1)
 
     if hours == 1:
